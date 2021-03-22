@@ -5,15 +5,16 @@ import Glide from '@glidejs/glide'
 class Glider extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { id: null };
+        this.slider = React.createRef();
+        this.glider = null;
 	}
 
 	componentDidMount = () => {
-	  	this.setState({ id: `glide-${Date.now()}` }, this.initGlider)
+	  	this.initGlider();
 	}
   
 	initGlider = () => {
-		this.slider = new Glide(`#${this.state.id}`, this.props.options)
+		this.slider = new Glide(this.slider.current, this.props.options)
 		this.slider.mount()
 	}
   
@@ -34,7 +35,7 @@ class Glider extends Component {
 	}
 
 	render = () => (
-	  <div id={this.state.id} style={{ overflowX: 'hidden', userSelect: 'none', maxWidth: '100vw' }}>
+	  <div ref={this.slider} style={{ overflowX: 'hidden', userSelect: 'none', maxWidth: '100vw' }}>
 		<div className="glide_track" data-glide-el="track">
 			<div className="glide_slides" style={{ display: 'flex' }}>
 				{this.props.children.map((slide, index) => {
@@ -54,7 +55,7 @@ class Glider extends Component {
 			{this.props.children.map((slide, index) => {
 				    let currIndex = "="+index;
 					return (
-					<button class="glide_bullet" data-glide-dir={currIndex}>
+					<button className="glide_bullet" data-glide-dir={currIndex}>
 					</button>
 					) 
 			})}
